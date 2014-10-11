@@ -15,17 +15,17 @@ class Api extends CI_Controller {
 
 		$this->load->model (array ('logger', 'limitter', 'request', 'response'));
 		$this->logger->debug (array ('Nowe zadanie: ', $this->request->getRaw ()));
-
+$this->limitter->clearUserEntries ();
 		if ($captcha = $this->request->getField ('captcha')) {
 			$this->load->model ('captcha');
 			if ($this->captcha->validate ($captcha))
-				$this->limitter->reset ();
+				$this->limitter->clearUserEntries ();
 		}
 
 		if ($this->limitter->checkLimit ()) {
 
-			if (! $this->limitter->update ()) {
-				$this->log->fatal ('Nie udalo sie zaktualizowac limitu wywolan');
+			if (! $this->limitter->addEntry ()) {
+				$this->logger->fatal ('Nie udalo sie zaktualizowac limitu wywolan');
 				$this->response->fail ('Internal Database Error.');
 			}
 
