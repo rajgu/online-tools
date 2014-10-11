@@ -23,7 +23,7 @@ class Request extends CI_Model {
 
 		$data = $this->input->post ('data');
 		if (! $data OR ! $data = json_decode ($data))
-			$this->logger->warning ('Niepoprawne dane wejsciowe');
+			$this->logger->syntax ('Niepoprawne dane wejsciowe');
 		$this->_inputData = $data;
 	}
 
