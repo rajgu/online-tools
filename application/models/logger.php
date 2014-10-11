@@ -45,6 +45,17 @@ class Logger extends CI_Model {
 
 	/*
 	*
+	* @function: syntax
+	* Zapisuje log o poziomie syntax.
+	*
+	*/
+
+	public function syntax ($log) {
+		return $this->_logEvent ($log, 'SYNTAX');
+	}
+
+	/*
+	*
 	* @function: fatal
 	* Zapisuje log o poziomie fatal.
 	*
@@ -73,7 +84,7 @@ class Logger extends CI_Model {
 		if (! file_exists ("logs/$dir"))
 			mkdir ("logs/$dir", 0777);
 
-		file_put_contents ("logs/$dir/$file", "$time - $ip - $pid - $level - $message\n", FILE_APPEND);
+		file_put_contents ("logs/$dir/$file", "$time $ip $pid $level $message\n", FILE_APPEND);
 	}
 
 	/*
@@ -83,7 +94,7 @@ class Logger extends CI_Model {
 	*
 	*/
 
-	function _createMessage ($input) {
+	private function _createMessage ($input) {
 
 		$data = '';
 		if (! is_array ($input)) {
