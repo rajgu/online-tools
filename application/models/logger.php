@@ -3,7 +3,7 @@
 	/*
 	*
 	* @model: Logger
-	* Klasa do zapisywania logów
+	* Klasa do zapisywania logów.
 	*
 	*/
 
@@ -12,66 +12,121 @@ class Logger extends CI_Model {
 	/*
 	*
 	* @function: info
-	* Zapisuje log o poziomie info
+	* Zapisuje log o poziomie info.
 	*
 	*/
 
 	public function info ($log) {
-		return $this->logEvent ($log, 'INFO');
+		return $this->_logEvent ($log, 'INFO');
 	}
 
 	/*
 	*
 	* @function: debug
-	* Zapisuje log o poziomie debug, tylko w przypadku, gdy ustawiony jest tryb development
+	* Zapisuje log o poziomie debug, tylko w przypadku, gdy ustawiony jest tryb development.
 	*
 	*/
 
 	public function debug ($log) {
 		if (ENVIRONMENT == 'development')
-			return $this->logEvent ($log, 'DEBUG');
+			return $this->_logEvent ($log, 'DEBUG');
 	}
 
 	/*
 	*
 	* @function: warning
-	* Zapisuje log o poziomie warning
+	* Zapisuje log o poziomie warning.
 	*
 	*/
 
 	public function warning ($log) {
-		return $this->logEvent ($log, 'WARNING');
+		return $this->_logEvent ($log, 'WARNING');
 	}
 
 	/*
 	*
 	* @function: fatal
-	* Zapisuje log o poziomie fatal
+	* Zapisuje log o poziomie fatal.
 	*
 	*/
 
 	public function fatal ($log) {
-		return $this->logEvent ($log, 'FATAL');
+		return $this->_logEvent ($log, 'FATAL');
 	}
 
 	/*
 	*
-	* @function: logEvent
-	* Fizyczny zapis logu do pliku
+	* @function: _logEvent
+	* Fizyczny zapis logu do pliku.
 	*
 	*/
 
-	private function logEvent ($message, $level) {
+	private function _logEvent ($message, $level) {
 
-		$ip    = $this->input->ip_address ();
-		$file  = date ('d') . '.log';
-		$dir   = date ('Y-m');
-		$time  = date ('Y-m-d H:i:s');
+		$ip      = $this->input->ip_address ();
+		$file    = date ('d') . '.log';
+		$dir     = date ('Y-m');
+		$time    = date ('Y-m-d H:i:s');
+		$pid     = getmypid ();
+		$message = $this->_createMessage ($message);
 
 		if (! file_exists ("logs/$dir"))
 			mkdir ("logs/$dir", 0777);
 
-		file_put_contents ("logs/$dir/$file", "$time - $ip - $level - $message\n", FILE_APPEND);
+		file_put_contents ("logs/$dir/$file", "$time - $ip - $pid - $level - $message\n", FILE_APPEND);
+	}
+
+	/*
+	*
+	* @function _createMessage
+	* Funkcja Przerabia dane otrzymane w wiadmości na format możliwy do zapisania w pojedyńczej linii
+	*
+	*/
+
+	function _createMessage ($input) {
+
+		$data = '';
+		if (! is_array ($input)) {
+			$data .= $this->_quoteLog ($input);
+		} else {
+			foreach ($input AS $key => $value)
+				$data .= $this->_parseInput ($value);
+		}
+
+		return $data;
+	}
+
+	/*
+	*
+	* @function: _parseInput
+	* Funkcja zwraca zserializowane, wyeskejpowane dane podane na wejściu.
+	*
+	*/
+
+	private function _parseInput ($input) {
+
+		$data = '';
+		if (! is_array ($input)) {
+			$data .= $this->_quoteLog ($input);
+		} else {
+			$data .= 'ARRAY => [';
+			foreach ($input AS $key => $value)
+				$data .= $this->_quoteLog ($key) . ' => ' . $this->_parseInput ($value);
+			$data .= ']';
+		}
+
+		return $data;
+	}
+
+	/*
+	*
+	* @function: _quoteLog
+	* Funkcja eskejpuje wszystkie znaki specjalne podane na wejsciu.
+	*
+	*/
+
+	private function _quoteLog ($input) {
+		return mysql_real_escape_string ($input);
 	}
 
 }
