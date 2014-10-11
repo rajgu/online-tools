@@ -1,0 +1,7 @@
+# Wykluczenie logow:
+/logs/*
+!/logs/.htaccess
+
+# Wykluczenie index.php (definiowanie zmiennej srodowiskowej ENVIRONMENT)
+/index.php
+
