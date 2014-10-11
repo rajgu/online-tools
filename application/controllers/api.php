@@ -15,7 +15,7 @@ class Api extends CI_Controller {
 
 		$this->load->model (array ('logger', 'limitter', 'request', 'response'));
 		$this->logger->debug (array ('Nowe zadanie: ', $this->request->getRaw ()));
-$this->limitter->clearUserEntries ();
+
 		if ($captcha = $this->request->getField ('captcha')) {
 			$this->load->model ('captcha');
 			if ($this->captcha->validate ($captcha))
