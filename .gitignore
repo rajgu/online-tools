@@ -5,3 +5,6 @@
 # Wykluczenie index.php (definiowanie zmiennej srodowiskowej ENVIRONMENT)
 /index.php
 
+#Wykluczenie plikow konfiguracyjnych CI
+/application/config/*
+
