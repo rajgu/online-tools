@@ -35,7 +35,7 @@ class Api extends CI_Controller {
 			}
 
 			if (! $this->request->process ()) {
-				$this->log->fatal ('Nie udalo sie przetworzyc zadania: ' $this->request->getReason ());
+				$this->log->fatal ('Nie udalo sie przetworzyc zadania: ' . $this->request->getReason ());
 				$this->response->fail ('Internal Error.');
 			}
 
