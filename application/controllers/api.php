@@ -30,12 +30,12 @@ class Api extends CI_Controller {
 			}
 
 			if (! $this->request->pre_process ()) {
-				$this->log->fatal (array ('Bledne zadanie: ', $this->request->getReason ()));
+				$this->logger->fatal ('Bledne zadanie');
 				$this->response->fail ('Bad Request.');
 			}
 
 			if (! $this->request->process ()) {
-				$this->log->fatal (array ('Nie udalo sie przetworzyc zadania: ', $this->request->getReason ()));
+				$this->log->fatal ('Nie udalo sie przetworzyc zadania');
 				$this->response->fail ('Internal Error.');
 			}
 
