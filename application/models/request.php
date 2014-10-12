@@ -53,4 +53,31 @@ class Request extends CI_Model {
 		return $_POST;
 	}
 
+	/*
+	*
+	* @function: pre_process
+	* Funkcja sprawdza czy istnieje klasa oraz metoda do przetworzenia zadania.
+	*
+	*/
+
+	public function pre_process () {
+
+		$model   = $this->getField ('type');
+		$command = $this->getField ('command');
+
+		if (! file_exists (APPPATH . "models/{$model}.php")) {
+			$this->logger->syntax ("Model $model nie istnieje");
+			return FALSE;
+		}
+
+		$this->load->model ($type);
+
+		if (! method_exists ($this->$type, $command)) {
+			$this->logger->syntax ("Metoda: $command w modelu $model nie istnieje");
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
 }
