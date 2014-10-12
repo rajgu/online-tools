@@ -1,0 +1,72 @@
+<html>
+<head>
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/css/bootstrap-theme.min.css">
+    <script type="text/javascript" src="../public/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../public/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <div class="input-group">
+                <span class="input-group-addon">URL: </span>
+                <input type="text" class="form-control" id="url">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h1 class="text-center">Request:</h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <textarea class="form-control" rows="5" id="request"></textarea>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-lg-offset-4 col-lg-4">
+            <button type="button" id="send" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-star"></span>
+                SEND
+                <span class="glyphicon glyphicon-star"></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+    <h1 class="text-center">Response:</h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+            <textarea class="form-control" rows="10" id="response"></textarea>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    $("#send").click(function() {
+        $.ajax({
+            type: "POST",
+            url: $("#url").val(),
+            data: $("#request").val(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(data) {
+                $('#response').val (JSON.stringify(data));
+            },
+            error: function(errMsg) {
+                $('#response').val (JSON.stringify(errMsg));
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>
