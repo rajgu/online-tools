@@ -27,20 +27,23 @@ class Api extends CI_Controller {
 			if (! $this->limitter->addEntry ()) {
 				$this->logger->fatal ('Nie udalo sie zaktualizowac limitu wywolan');
 				$this->response->fail ('Internal Database Error.');
+				return;
 			}
 
 			if (! $this->request->pre_process ()) {
 				$this->logger->fatal ('Bledne zadanie');
 				$this->response->fail ('Bad Request.');
+				return;
 			}
 
 			if (! $this->request->process ()) {
 				$this->log->fatal ('Nie udalo sie przetworzyc zadania');
 				$this->response->fail ('Internal Error.');
+				return;
+			} else {
+				$this->logger->info (array ('Zadanie OK Typ: ', $this->request->getModel (), ' Funkcja: ', $this->Request->getFunction ()));
+				$this->response->success ($this->request->getResponse ());
 			}
-
-			$this->logger->info (array ('Zadanie OK Typ: ', $this->request->getModel (), ' Funkcja: ', $this->Request->getFunction ()));
-			$this->response->success ($this->request->getResponse ());
 
 		} else {
 
