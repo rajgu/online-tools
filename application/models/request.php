@@ -65,12 +65,12 @@ class Request extends CI_Model {
 		$model   = $this->getField ('type');
 		$command = $this->getField ('command');
 
-		if (! file_exists (APPPATH . "models/{$model}.php")) {
+		if (! file_exists (APPPATH . "models/api/{$model}.php")) {
 			$this->logger->syntax ("Model $model nie istnieje");
 			return FALSE;
 		}
 
-		$this->load->model ($type);
+		$this->load->model ("api/{$type}");
 
 		if (! method_exists ($this->$type, $command)) {
 			$this->logger->syntax ("Metoda: $command w modelu $model nie istnieje");
