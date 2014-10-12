@@ -13,6 +13,7 @@ application/config/database.php
 !private/
 private/*
 
+!/private/.htaccess
 !/private/db_structure/
 !/private/db2ip-importer.php
 
