@@ -14,9 +14,14 @@ class Api extends CI_Controller {
 	public function index () {
 
 		$this->load->model (array ('logger', 'limitter', 'request', 'response'));
-		$this->logger->debug (array ('Nowe zadanie: ', $this->request->getRaw ()));
 
-		if ($captcha = $this->request->getField ('captcha')) {
+		if (! $this->request->pre_process ()) {
+			$this->logger->fatal ('Bledne zadanie');
+			$this->response->fail ('Bad Request.');
+			return;
+		}
+
+		if ($captcha = $this->request->getCaptcha ('captcha')) {
 			$this->load->model ('captcha');
 			if ($this->captcha->validate ($captcha))
 				$this->limitter->clearUserEntries ();
@@ -30,18 +35,13 @@ class Api extends CI_Controller {
 				return;
 			}
 
-			if (! $this->request->pre_process ()) {
-				$this->logger->fatal ('Bledne zadanie');
-				$this->response->fail ('Bad Request.');
-				return;
-			}
 
 			if (! $this->request->process ()) {
-				$this->log->fatal ('Nie udalo sie przetworzyc zadania');
+				$this->logger->fatal ('Nie udalo sie przetworzyc zadania');
 				$this->response->fail ('Internal Error.');
 				return;
 			} else {
-				$this->logger->info (array ('Zadanie OK Typ: ', $this->request->getModel (), ' Funkcja: ', $this->Request->getFunction ()));
+				$this->logger->info (array ('Zadanie OK Typ: ', $this->request->getModel (), ' Funkcja: ', $this->request->getMethod ()));
 				$this->response->success ($this->request->getResponse ());
 			}
 
