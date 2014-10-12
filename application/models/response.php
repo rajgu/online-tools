@@ -55,7 +55,7 @@ class Response extends CI_Model {
 	private function _printMessage ($msg = FALSE, $type = FALSE) {
 
 		if (! $msg OR ! $type) {
-			$this->logger->syntax ("Brak parametru wejsciowego Message: {$msg} Type: {$type}");
+			$this->logger->syntax ("brak parametru wejsciowego message: {$msg} type: {$type}");
 		}
 
 		$message = array ('status' => $type, 'message' => $msg);
