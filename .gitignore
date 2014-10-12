@@ -1,11 +1,18 @@
 # Wykluczenie logow:
-/logs/*
+logs/
+!logs/.htaccess
+!logs/index.html
 
 # Wykluczenie index.php (definiowanie zmiennej srodowiskowej ENVIRONMENT)
-/index.php
+index.php
 
 #Wykluczenie plikow konfiguracyjnych:
-/application/config/database.php
+application/config/database.php
 
 #Wykluczenie /private - importerow, testerow i innego sprzetu pomocniczego (Oczywiscie same skrypty importujace dodaje do repo)
-/private/*
+!private/
+private/*
+
+!/private/db_structure/
+!/private/db2ip-importer.php
+
