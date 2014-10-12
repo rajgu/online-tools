@@ -1,6 +1,5 @@
 # Wykluczenie logow:
 /logs/*
-!/logs/.htaccess
 
 # Wykluczenie index.php (definiowanie zmiennej srodowiskowej ENVIRONMENT)
 /index.php
@@ -8,3 +7,5 @@
 #Wykluczenie plikow konfiguracyjnych:
 /application/config/database.php
 
+#Wykluczenie /private - importerow, testerow i innego sprzetu pomocniczego (Oczywiscie same skrypty importujace dodaje do repo)
+/private/*
