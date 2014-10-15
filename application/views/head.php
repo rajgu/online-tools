@@ -26,14 +26,14 @@
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes"><span class="glyphicon glyphicon-road"></span> Domains &amp; Network<span class="caret"></span></a>
 							<ul class="dropdown-menu" aria-labelledby="themes">
-								<li><a href="<?php echo base_url('domains/whois'); ?>">Whois</a></li>
-								<li><a href="../cerulean/">Dropped</a></li>
-								<li><a href="../cosmo/">Records (DIG)</a></li>
-								<li><a href="../cosmo/">BlackList Checker</a></li>
+								<li><a href="<?php echo base_url('domains/whois'); ?>"><span class="glyphicon glyphicon-search"></span> Whois</a></li>
+								<li><a href="<?php echo base_url('domains/dropped'); ?>"><span class="glyphicon glyphicon-trash"></span> Dropped</a></li>
+								<li><a href="<?php echo base_url('domains/records'); ?>"><span class="glyphicon glyphicon-link"></span> Records (DIG)</a></li>
+								<li><a href="<?php echo base_url('domains/blacklists'); ?>"><span class="glyphicon glyphicon-eye-close"></span> BlackList Checker</a></li>
 								<li class="divider"></li>
-								<li><a href="/domain">IP Lookup</a></li>
-								<li><a href="../cerulean/">Ping</a></li>
-								<li><a href="../cosmo/">Traceroute</a></li>
+								<li><a href="<?php echo base_url('network/lookup'); ?>"><span class="glyphicon glyphicon-screenshot"></span> IP Lookup</a></li>
+								<li><a href="<?php echo base_url('network/ping'); ?>"><span class="glyphicon glyphicon-hand-right"></span> Ping</a></li>
+								<li><a href="<?php echo base_url('network/traceroute'); ?>"><span class="glyphicon glyphicon-globe"></span> Traceroute</a></li>
 							</ul>
 						</li>
 
