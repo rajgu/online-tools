@@ -17,8 +17,10 @@ class Main extends CI_Controller {
 	*
 	*/
 
-	public function index ()
-	{
-		$this->load->view ('head');
+	public function index () {
+
+		$this->load->model ('viewer');
+		$this->load->view ('head', $this->viewer->getHeaderData ());
 	}
+
 }
