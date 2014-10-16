@@ -80,11 +80,12 @@ class Logger extends CI_Model {
 		$time    = date ('Y-m-d H:i:s');
 		$pid     = getmypid ();
 		$message = $this->_createMessage ($message);
+		$stacktrace	= $this->_getStackTrace (new Exception ());
 
 		if (! file_exists ("logs/$dir"))
 			mkdir ("logs/$dir", 0777);
 
-		file_put_contents ("logs/$dir/$file", "$time $ip $pid $level $message\n", FILE_APPEND);
+		file_put_contents ("logs/$dir/$file", "$time $ip $pid $level $message $stacktrace\n", FILE_APPEND);
 	}
 
 	/*
@@ -138,6 +139,25 @@ class Logger extends CI_Model {
 
 	private function _quoteLog ($input) {
 		return mysql_real_escape_string ($input);
+	}
+
+	/*
+	*
+	* @function: _getStackTrace
+	* Zwraca stack trace wywoływanych funkcji.
+	* Wycina funkcje loggera oraz CI.
+	*
+	*/
+
+	private function _getStackTrace ($exception) {
+
+		$dir		= getcwd ();
+		$stack		= explode ("\n", $exception->getTraceAsString ());
+		$stack		= array_slice ($stack, 1, count ($stack) - 4);
+		$stack		= implode (', ', $stack);
+		$stack		= str_replace ($dir, '', $stack);
+
+		return $stack;
 	}
 
 }
