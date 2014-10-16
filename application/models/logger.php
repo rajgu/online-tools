@@ -157,7 +157,7 @@ class Logger extends CI_Model {
 		$stack		= implode (', ', $stack);
 		$stack		= str_replace ($dir, '', $stack);
 
-		return $stack;
+		return stripslashes ($stack);
 	}
 
 }
