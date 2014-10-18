@@ -155,9 +155,8 @@ class Logger extends CI_Model {
 		$stack		= explode ("\n", $exception->getTraceAsString ());
 		$stack		= array_slice ($stack, 1, count ($stack) - 4);
 		$stack		= implode (', ', $stack);
-		$stack		= str_replace ($dir, '', $stack);
 
-		return stripslashes ($stack);
+		return (($dir == '/') ? $stack : str_replace ($dir, '', $stack));
 	}
 
 }
