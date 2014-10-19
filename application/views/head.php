@@ -24,12 +24,11 @@
 		<div class="navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
-					<a href="<?php echo base_url(); ?>" class="navbar-brand">online-tools.it</a>
+					<a href="<?php echo base_url (); ?>" class="navbar-brand">online-tools.it</a>
 				</div>
 
 				<div class="navbar-collapse collapse" id="navbar-main">
 					<ul class="nav navbar-nav navbar-right">
-
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes"><span class="glyphicon glyphicon-road"></span> Domains &amp; Network<span class="caret"></span></a>
 							<ul class="dropdown-menu" aria-labelledby="themes">
@@ -94,34 +93,3 @@
 			</div>
 		</div>
 
-<div class"content">
-
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-
-</div>
-
-
-
-	
