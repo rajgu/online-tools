@@ -34,7 +34,29 @@ class Domain extends CI_Model {
 
 		$data = $this->whois->lookup ($this->params);
 		$this->request->setResponse ($data);
+
 		return TRUE;
+	}
+
+	/*
+	*
+	* @function: dig
+	* Zwraca wynik komendy dig dla zadanych parametrów.
+	*
+	*/
+
+	public function dig () {
+
+		$this->load->model ('dig');
+
+		$data = $this->dig->makeDig ($this->params);
+
+		if ($data) {
+			$this->request->setResponse ($data);
+			return TRUE;
+		}
+
+		return FALSE;
 	}
 
 }
