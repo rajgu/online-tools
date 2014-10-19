@@ -24,8 +24,8 @@ $config = array (
 				'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js',
 			),
 			'js_ie8'=> array (
-				'/html5shiv.js',
-				'/respond.min.js',
+				'/public/js/html5shiv.js',
+				'/public/js/respond.min.js',
 			),
 		),
 		'development'	=> array (
@@ -43,4 +43,5 @@ $config = array (
 			),
 		),
 	),
+
 );
