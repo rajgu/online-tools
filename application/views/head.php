@@ -70,9 +70,8 @@
 							<ul class="dropdown-menu" aria-labelledby="themes">
 								<li><a href="/domain">IP Lookup</a></li>
 								<li><a href="../cerulean/">Ping</a></li>
-								<li><a href="../cosmo/">Traceroute</a></li>
-								<li><a href="../cosmo/">HTTP Requester</a></li>
-								<li><a href="../cosmo/">Web Proxy</a></li>
+								<li class="divider"></li>
+								<li><a href="<?php echo base_url('encryption/hash'); ?>"><span class="glyphicon glyphicon-flash"></span> Hash Functions</a></li>
 							</ul>
 						</li>
 
