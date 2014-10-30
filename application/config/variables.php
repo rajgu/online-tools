@@ -58,7 +58,7 @@ $config = array (
 				'openssl'		=> array (
 					'/public/js/cryptojs/evpkdf.min.js',
 				),
-
+			),
 		),
 		'development'	=> array (
 			'css'	=> array (
