@@ -16,15 +16,24 @@ class Viewer extends CI_Model {
 	*
 	*/
 
-	public function getHeaderData () {
+	public function getHeaderData ($params = FALSE) {
 
+		$inc_js = array ();
 		$includes = $this->config->item ('includes');
+
+		if (isset ($params['js'])) {
+			foreach ($params['js'] AS $inc_library => $inc_blocks) {
+				$inc_blocks = explode (',', $inc_blocks);
+				foreach ($inc_blocks AS $block)
+					$inc_js = array_merge ($inc_js, $this->_makeURL ($includes[ENVIRONMENT][$inc_library][$block]));
+			}
+		}
 
 		return array (
 			'title'		=> 'Typical Title',
 			'keywords'	=> 'typical keywords',
 			'css'		=> $this->_makeURL ($includes[ENVIRONMENT]['css']),
-			'js'		=> $this->_makeURL ($includes[ENVIRONMENT]['js']),
+			'js'		=> array_merge ($this->_makeURL ($includes[ENVIRONMENT]['js']), $inc_js),
 			'js_ie8'	=> $this->_makeURL ($includes[ENVIRONMENT]['js_ie8']),
 		);
 	}
