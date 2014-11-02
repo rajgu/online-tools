@@ -22,6 +22,7 @@ $config = array (
 			'js'	=> array (
 				'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js',
 				'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js',
+				'/public/js/bootstrap.file-input.js',
 			),
 			'js_ie8'=> array (
 				'/public/js/html5shiv.js',
@@ -68,6 +69,7 @@ $config = array (
 			'js'	=> array (
 				'/public/js/jquery-2.1.1.min.js',
 				'/public/js/bootstrap.min.js',
+				'/public/js/bootstrap.file-input.js',
 			),
 			'js_ie8'=> array (
 				'/public/js/html5shiv.js',
