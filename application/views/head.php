@@ -58,6 +58,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-refresh"></span> Converters &amp; Parsers <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="<?php echo base_url('converters/base64'); ?>"><span class="glyphicon glyphicon-list-alt"></span> Base64 Encode/Decode</a></li>
+                            <li><a href="<?php echo base_url('converters/timestamp'); ?>"><span class="glyphicon glyphicon-time"></span> Unix Timestamp</a></li>
                         </ul>
                     </li>
 
