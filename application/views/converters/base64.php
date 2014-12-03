@@ -1,6 +1,3 @@
-
-
-
 <div class="container">
 
 <div class="row page-header">
@@ -8,7 +5,6 @@
         <h2 class="text-center">Base64 Encode / Decode</h2>
     </div>
 </div>
-
 
 <div class="col-lg-10 col-lg-offset-1">
     <div class="form-group">
@@ -23,11 +19,13 @@
     </div>
 </div>
 
-<div class="col-lg-10 col-lg-offset-1">
+<div class="col-lg-8 col-lg-offset-2">
     <div class="form-group">
-        <div class="input-group">
+        <div class="input-group pull-left">
             <button type="button" class="btn btn-lg btn-default" id="btn_encode"><span class="glyphicon glyphicon-arrow-down"></span> ENCODE</button>
-            <button type="button" class="btn btn-lg btn-default" id="btn_decode"><span class="glyphicon glyphicon-arrow-up"></span> DECODE</button>
+        </div>
+        <div class="input-group pull-right">
+            <button type="button" class="btn btn-lg btn-default pull-right" id="btn_decode"><span class="glyphicon glyphicon-arrow-up"></span> DECODE</button>
         </div>
     </div>
 </div>
