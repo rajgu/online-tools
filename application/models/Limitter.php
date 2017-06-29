@@ -32,7 +32,7 @@ class Limitter extends CI_Model {
 			return FALSE;
 
 		if (
-			$num['min'] >= $this->config->item ('request_limit_min') OR
+			$num['min']  >= $this->config->item ('request_limit_min') OR
 			$num['hour'] >= $this->config->item ('request_limit_hour')
 		) return FALSE;
 
