@@ -143,7 +143,7 @@ class Limitter extends CI_Model {
 		$sql  = "SELECT count(*) AS `count` FROM `limitter` WHERE `ip` = ? AND `timestamp` >= ? ";
 
 		$result = $this->db->query ($sql, array ($ip, $time - 60));
-		if ($this->db->error ()) {
+		if ($this->db->error ()['code'] !== 0) {
 			$this->logger->warning (array ('Nie udalo sie pobrac danych limitera (min) ', $this->db->error ()));
 			return FALSE;
 		}
@@ -151,7 +151,7 @@ class Limitter extends CI_Model {
 		$data['min'] = (int) $result->row ()->count;
 
 		$result = $this->db->query ($sql, array ($ip, $time - 60 * 60));
-		if ($this->db->error()) {
+		if ($this->db->error()['code'] !== 0) {
 			$this->logger->warning (array ('Nie udalo sie pobrac danych limitera (hour) ', $this->db->error ()));
 			return FALSE;
 		}

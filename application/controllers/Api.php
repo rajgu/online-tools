@@ -26,7 +26,6 @@ class Api extends CI_Controller {
 			if ($this->captcha->validate ($captcha))
 				$this->limitter->clearUserEntries ();
 		}
-
 		if ($this->limitter->checkLimit ()) {
 
 			if (! $this->limitter->addEntry ()) {
