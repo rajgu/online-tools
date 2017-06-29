@@ -56,7 +56,7 @@ class Request extends CI_Model {
 		$this->_model = $this->getField ('type');
 		$this->_command = $this->getField ('command');
 
-		if (! ctype_alpha ($this->_model) OR ! file_exists (APPPATH . "models/api/{$this->_model}.php")) {
+		if (! ctype_alpha ($this->_model) OR ! file_exists (APPPATH . 'models/api/' . ucfirst ($this->_model) . '.php')) {
 			$this->logger->syntax ("model: {$this->_model} nie istnieje");
 			return FALSE;
 		}

@@ -56,10 +56,10 @@ class Limitter extends CI_Model {
 
 		$this->db->insert ('limitter', array ('ip' => $ip, 'timestamp' => $time));
 
-		$result = ($this->db->affected_rows() != 1) ? FALSE : TRUE;
+		$result = ($this->db->affected_rows () != 1) ? FALSE : TRUE;
 
 		if (! $result)
-			$this->logger->warning (array ("Nie udalo sie dodac pozycji limitera ip: $ip time: $time", $this->db->_error_message ()));
+			$this->logger->warning (array ("Nie udalo sie dodac pozycji limitera ip: $ip time: $time", $this->db->error ()));
 
 		return $result;
 	}
@@ -138,20 +138,21 @@ class Limitter extends CI_Model {
 
 	private function _getNumRequests ($ip) {
 
+		$data = array ();
 		$time = time ();
 		$sql  = "SELECT count(*) AS `count` FROM `limitter` WHERE `ip` = ? AND `timestamp` >= ? ";
 
 		$result = $this->db->query ($sql, array ($ip, $time - 60));
-		if ($this->db->_error_message ()) {
-			$this->logger->warning (array ('Nie udalo sie pobrac danych limitera (min) ', $this->db->_error_message ()));
+		if ($this->db->error ()) {
+			$this->logger->warning (array ('Nie udalo sie pobrac danych limitera (min) ', $this->db->error ()));
 			return FALSE;
 		}
 
 		$data['min'] = (int) $result->row ()->count;
 
 		$result = $this->db->query ($sql, array ($ip, $time - 60 * 60));
-		if ($this->db->_error_message ()) {
-			$this->logger->warning (array ('Nie udalo sie pobrac danych limitera (hour) ', $this->db->_error_message ()));
+		if ($this->db->error()) {
+			$this->logger->warning (array ('Nie udalo sie pobrac danych limitera (hour) ', $this->db->error ()));
 			return FALSE;
 		}
 
