@@ -138,7 +138,14 @@ class Logger extends CI_Model {
 	*/
 
 	private function _quoteLog ($input) {
-		return mysql_real_escape_string ($input);
+
+        if (is_array ($input))
+    	    return array_map (__METHOD__, $inp); 
+
+	    if ( ! empty ($input) && is_string ($input))
+        	return str_replace (array ('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array ('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $input);
+
+    	return $input;
 	}
 
 	/*
