@@ -4,43 +4,54 @@
 *
 * @file: db2ip-importer.php
 * Konwerter pliku csv pobranego z https://db-ip.com/db/#downloads
+* Na wyjście trafiają inserty do bazy danych.
 *
 */
 
-if ($argc != 6) {
-	die ("Nie prawidlowe argumenty wejsciowe:\n\t UZYCIE:\n\t\t{$argv['0']} file_name db_host db_user db_pass db_base\n");
+define ('BATCH_SIZE', 1000);
+
+if ($argc != 2) {
+	die ("Nieprawidlowe argumenty wejsciowe:\n\t UZYCIE:\n\t\t{$argv['0']} file_name\n");
 }
 
 if (! file_exists ($argv[1]) OR ! $file = fopen ($argv[1], "r")) {
 	die ("Cant open: {$argv[1]}\n");
 }
 
-mysql_connect ($argv[2], $argv[3], $argv[4]);
-mysql_select_db ($argv[5]);
-
-if (mysql_error ()) {
-	die (mysql_error ()."\n");
-}
-
-$import = array ();
+$import4 = array ();
+$import6 = array ();
 
 while (($line = fgetcsv ($file)) !== FALSE) {
 
-	$line[0] = ip2long ($line[0]);
-	$line[1] = ip2long ($line[1]);
+	if (filter_var ($line[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 
-	$import[] = $line;
+		$line[0] = ip2long ($line[0]);
+		$line[1] = ip2long ($line[1]);
 
-	if (count ($import) == 1000) {
-		importer ($import);
-		$import = array ();
+		$import4[] = $line;
+	}
+
+	if (filter_var ($line[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+
+		$import6[] = $line;
+	}
+
+	if (count ($import4) == BATCH_SIZE) {
+		importer ($import4, 'ipv4');
+		$import4 = array ();
+	}
+
+	if (count ($import6) == BATCH_SIZE) {
+		importer ($import6, 'ipv6');
+		$import6 = array ();
 	}
 
 }
 
-importer ($import);
+importer ($import4, 'ipv4');
+importer ($import6, 'ipv6');
 
-function importer ($data) {
+function importer ($data, $table) {
 	static $added = 0;
 
 	if (empty ($data))
@@ -50,17 +61,20 @@ function importer ($data) {
 
 	$values = array ();
 	foreach ($data AS $record) {
-		$values[] = "(" . implode (",", array_map (function ($r) {return "'" . mysql_real_escape_string ($r) . "'"; }, $record) ) . ")";
+		$values[] = "(" . implode (",", array_map (function ($r) {return "'" . escape_like_mysql ($r) . "'"; }, $record) ) . ")";
 	}
 
 	$values = implode (',', $values);
-	$query = "INSERT INTO `ips` (`ip_from`, `ip_to`, `country`, `region`, `city`) VALUES $values";
+	print ("INSERT INTO `$table` (`ip_from`, `ip_to`, `country`, `region`, `city`) VALUES $values;\n");
+}
 
-	mysql_query ($query);
-	if (mysql_error ())
-		die (mysql_error () . "\n");
+function escape_like_mysql ($input) {
 
-	$added += $num;
+    if (is_array ($input))
+        return array_map (__METHOD__, $inp); 
 
-	print ("ADDED: \t$num\t ALL:\t $added\n");
+    if ( ! empty ($input) && is_string ($input))
+        return str_replace (array ('\\', "\0", "\n", "\r", "'", '"', "\x1a"), array ('\\\\', '\\0', '\\n', '\\r', "\\'", '\\"', '\\Z'), $input);
+
+	return $input;
 }
