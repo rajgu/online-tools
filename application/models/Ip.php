@@ -2,12 +2,48 @@
 
     /*
     *
-    * @model: IpLocation
-    * Model do lokalizowania użytkownika po adresie IP.
+    * @model: Ip
+    * Model do funkcji sieciowych.
     *
     */
 
-class IpLocation extends CI_Model {
+class Ip extends CI_Model {
+
+    /**
+    *
+    * @function: ping
+    * Metod do wysyłania pakietów ICMP echo request.
+    *
+    */
+
+    public function ping ($input) {
+
+        $command = 'ping -n -c ' . $input['count'] . ' -t ' . $input['ttl'] . ' ' . $input['host'] . ' 2>&1';
+
+        $this->logger->debug (array ('Exec string dla ping: ', $command));
+
+        exec ($command, $output, $return);
+        $parsed = array ();
+        $response = array ();
+
+        for ($i = 1; isset ($output[$i]) AND $i <= $input['count']; $i++) {
+
+            preg_match ("/time(?:=|<)(?<time>[\.0-9]+)(?:|\s)ms/", $output[$i], $matches);
+            $parsed[$i-1]['time'] = @$matches['time'];
+
+            preg_match ("/icmp_seq(?:=|<)(?<icmp_seq>[\.0-9]+)(?:|\s) /", $output[$i], $matches);
+            $parsed[$i-1]['icmp_seq'] = @$matches['icmp_seq'];
+
+            preg_match ("/ttl(?:=|<)(?<ttl>[\.0-9]+)(?:|\s) /", $output[$i], $matches);
+            $parsed[$i-1]['ttl'] = @$matches['ttl'];
+        }
+
+        $response['host'] = $input['host'];
+        $response['parsed'] = $parsed;
+        $response['raw'] = implode ("\n", $output);
+
+        return $response;
+    }
 
     /**
     *
@@ -17,7 +53,6 @@ class IpLocation extends CI_Model {
     */
 
     public function locate ($input) {
-
 
         // adres IPV4 Decimal
         if ($this->isIpv4Decimal ($input)) {

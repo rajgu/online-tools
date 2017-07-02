@@ -11,6 +11,11 @@ $config = array (
 	'request_limit_min'		=> 20, // maksymalna liczba requestow bez captchy na minute
 	'request_limit_hour'	=> 200, // maksymalna liczba requestow bez captchy na godzine
 
+	// Dopuszczalne wartości dla ping - count i ttl
+	'ping' => array (
+		'count' => array ('range_from' => 1, 'range_to' =>  10, 'default' => 2),
+		'ttl'   => array ('range_from' => 1, 'range_to' => 255, 'default' => 64),
+	),
 
 	// Definicja plików dołączanych na produkcji i developerce
 	'includes'	=> array (
