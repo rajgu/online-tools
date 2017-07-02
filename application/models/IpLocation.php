@@ -26,7 +26,7 @@ class IpLocation extends CI_Model {
 
         // adres IPV6 Decimal
         if ($this->isIpv6Decimal ($input)) {
-            $input = long2ip ($input);
+            $input = decimalToIpv6 ($input);
         }
 
         // hostname/domena
@@ -80,8 +80,6 @@ class IpLocation extends CI_Model {
             }
 
             return false;
-
-
         }
 
         return false;
