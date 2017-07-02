@@ -1,6 +1,6 @@
 CREATE TABLE `ipv6` (
-  `ip_from` varbinary(16) NOT NULL DEFAULT '0',
-  `ip_to` varbinary(16) NOT NULL,
+  `ip_from` varchar(42) NOT NULL DEFAULT '0',
+  `ip_to` varchar(42) NOT NULL,
   `country` varchar(32) COLLATE utf8_bin NOT NULL,
   `region` varchar(128) COLLATE utf8_bin NOT NULL,
   `city` varchar(128) COLLATE utf8_bin NOT NULL,

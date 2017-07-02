@@ -33,6 +33,9 @@ while (($line = fgetcsv ($file)) !== FALSE) {
 
 	if (filter_var ($line[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 
+		$line[0] = ipv6ToDecimal ($line[0]);
+		$line[1] = ipv6ToDecimal ($line[1]);
+
 		$import6[] = $line;
 	}
 
@@ -67,6 +70,29 @@ function importer ($data, $table) {
 	$values = implode (',', $values);
 	print ("INSERT INTO `$table` (`ip_from`, `ip_to`, `country`, `region`, `city`) VALUES $values;\n");
 }
+
+function ipv6ToDecimal ($input) {
+    $parts = unpack('N*', inet_pton ($input));
+
+    // fix IPv4
+    if (strpos ($input, '.') !== false)
+        $parts = array (1=>0, 2=>0, 3=>0, 4=>$parts[1]);
+
+    foreach ($parts as &$part) {
+        // convert any unsigned ints to signed from unpack.
+        // this should be OK as it will be a PHP float not an int
+        if ($part < 0)
+            $part += 4294967296;
+    }
+
+    $decimal = $parts[4];
+    $decimal = bcadd ($decimal, bcmul ($parts[3], '4294967296'));
+    $decimal = bcadd ($decimal, bcmul ($parts[2], '18446744073709551616'));
+    $decimal = bcadd ($decimal, bcmul ($parts[1], '79228162514264337593543950336'));
+
+    return $decimal;
+}
+
 
 function escape_like_mysql ($input) {
 
