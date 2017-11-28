@@ -42,4 +42,21 @@ class Network extends CI_Controller {
         var_dump ($this->IpLocation->locate ('2602:302:9eb4:8fff:ffff:ffff:ffff:ffff'));
 
     }
+
+    /*
+    *
+    * @function: lookup
+    * Kontroler akcji do wywołania polecenia nslookup.
+    *
+    */
+
+    public function lookup () {
+
+        $this->load->view ('head', $this->viewer->getHeaderData ());
+
+        $this->load->view ('footer');
+
+    }
+
+
 }
