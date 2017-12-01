@@ -2,7 +2,7 @@
 
 /*
 *
-* @library: whois
+* @library: Whois
 * Obsługa zewnętrznego modułu phpwhois.
 *
 */
@@ -11,8 +11,8 @@ class Whois {
 
 	/*
 	*
-	* @function: __construct
-	* Ładuje zewnętrzną klasę, oraz tworzy główny obiekt.
+	* @function: Whois
+	* Domyślny konstruktot, ładuje zewnętrzną klasę, oraz tworzy główny obiekt.
 	*
 	*/
 

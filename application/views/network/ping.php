@@ -20,9 +20,6 @@
 
 
 
-
-
-
 <div class="col-lg-10 col-lg-offset-1">
     <div class="form-group">
         <div class="input-group">
@@ -63,19 +60,3 @@
 
 </div>
 
-
-
-<script type="text/javascript">
-$('#btn_decode').bind( "click", function() {
-	$("#input_plain_text").val ('');
-    var decoded = CryptoJS.enc.Base64.parse($("#input_base64").val());
-    $("#input_plain_text").val(decoded.toString (CryptoJS.enc.Utf8));
-});
-
-$('#btn_encode').bind( "click", function() {
-	$("#input_base64").val ('');
-	var text = CryptoJS.enc.Utf8.parse ($("#input_plain_text").val());
-    var encoded = CryptoJS.enc.Base64.stringify(text);
-    $("#input_base64").val(encoded);
-});
-</script>
