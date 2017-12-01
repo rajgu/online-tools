@@ -30,7 +30,7 @@ function Api_Send (data) {
     var requestData = {
         "type": data['type'],
         "command": data['command'],
-        "data": data['data']
+        "params": data['params']
     }
 
     console.log (requestData);
@@ -53,7 +53,7 @@ function Api_Send (data) {
             Api_Send({
                 type: "domain",
                 command: "whois",
-                data: {"domain": domainName}
+                params: {"domain": domainName}
             })
 
 

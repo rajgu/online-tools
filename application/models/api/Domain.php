@@ -32,7 +32,7 @@ class Domain extends CI_Model {
 
 		$this->load->library ('Whois');
 
-		$data = $this->whois->lookup ($this->params);
+		$data = $this->whois->lookup ($this->params['domain']);
 		$this->request->setResponse ($data);
 
 		return TRUE;
