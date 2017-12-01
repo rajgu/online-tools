@@ -11,6 +11,20 @@ class Ip extends CI_Model {
 
     /**
     *
+    * @function: traceroute
+    * Metod do pokazywania tras do hosta.
+    *
+    */
+
+    public function traceroute ($input) {
+
+
+        return true;
+    }
+
+
+    /**
+    *
     * @function: ping
     * Metod do wysyłania pakietów ICMP echo request.
     *

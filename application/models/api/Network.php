@@ -9,6 +9,38 @@ class Network extends CI_Model {
 
     /**
     *
+    * @method: traceroute
+    * Metoda wywołuje funkcje do sledzenia trasy do hosta.
+    * @params:
+    * host - Adres do sprawdzenia
+    *
+    */
+
+    public function traceroute () {
+
+        $this->load->model ('ip');
+
+        if (!isset ($this->params['host']) OR !$this->params['host'] ) {
+            $this->logger->syntax ('Brak wymaganego parametru: "host"');
+            return false;
+        }
+
+        if (!$this->ip->isIpv4 ($this->params['host']) AND
+            !$this->ip->isIpv6 ($this->params['host']) AND
+            !$this->ip->isHostname ($this->params['host'])) {
+
+            $this->logger->syntax (array ('Nieprawidłowy parametr host: ', $this->params['host']));
+            return false;
+        }
+
+        $response = $this->ip->traceroute ($this->params);
+        $this->request->SetResponse ($response ? $response : 'false');
+
+        return true;
+    }
+
+    /**
+    *
     * @method: ping
     * Metoda wywołuje metode ping dla danego adresu.
     * @params:
@@ -61,7 +93,6 @@ class Network extends CI_Model {
         $this->request->SetResponse ($response ? $response : 'false');
 
         return true;
-
 	}
 
     /**
