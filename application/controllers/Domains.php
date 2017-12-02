@@ -37,11 +37,8 @@ class Domains extends CI_Controller {
 		$this->load->view ('domains/dropped');
 
 
-		$this->load->model ('connector');
-		$this->load->model ('dropper/dropper_pl');
-
-		$data = $this->dropper_pl->getDroppedDomains ();
-		var_dump ($data);
+		$this->load->model ('dropper');
+		$this->dropper->process ();
 
 
 	}

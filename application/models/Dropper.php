@@ -11,40 +11,90 @@ class Dropper extends CI_Model {
 
 	/*
 	*
-	* @array: List_call
-	* Lista rozszerzeń, wraz z callbackami do funckcji, które pobierają liste z zew. źródeł.
+	* @data: DROPPER_TABLE
+	* Nazwa tabeli przechowujacej liste porzuconych domen.
 	*
 	*/
 
-	private $List_call = array (
-		'de'	=> 'de_get',
+	private $DROPPER_TABLE = 'dropped_domains';
+
+	/*
+	*
+	* @array: DROPPER_LIST
+	* Lista rozszerzeń, wraz z nazwami klas do pobierania z zewnetrznych źródeł.
+	*
+	*/
+
+	private $DROPPER_LIST = array (
+		'pl'	=> 'dropper_pl',
 	);
 
 	/*
 	*
+	* @function: __construct
+	* Konstruktor.
+	*
+	*/
+
+	public function __construct () {
+
+		if (! $this->load->is_loaded ('connector')) {
+			$this->load->model ('connector');
+		}
+
+	}
+
+	/*
+	*
+	* @function: __save
+	* Metoda zapisuje pobrane domeny do bazy danych,
+	*
+	*/
+
+	private function __save ($params) {
+
+		foreach ($params['domains'] AS $domain) {
+
+			$domain_utf = idn_to_utf8 ($domain);
+			$domain_idn = idn_to_ascii ($domain);
+
+			$query = $this->db->get_where ($this->DROPPER_TABLE, array ('name' => $domain_utf));
+
+			if (! empty ($query->result ()) or ! $domain)
+				continue;
+
+			$this->db->insert ($this->DROPPER_TABLE, array (
+				'name'         => $domain_utf,
+				'name_idn'     => $domain_idn,
+				'extension'    => $params['extension'],
+				'date_dropped' => $params['drop_date'],
+			));
+		}
+
+	}
+
+
+	/*
+	*
 	* @function: process
-	* Główna funckja, pobiera liste rozszerzeń które mamy pobrać, wywołuje odpowiednie callbacki i zapisuje wyniki.
+	* Główna funkcja, tworzy odpowiednie klasy do pobierania domen i zapisuje wyniki.
 	*
 	*/
 
 	public function process () {
 
-		$this->de_get ();
-	}
+		foreach ($this->DROPPER_LIST AS $extension => $class) {
 
-	/*
-	*
-	* @function: de_get
-	* Getter dla listy dropniętych domen de.
-	* Zwraca pełną listę domen .de dla zadanego dnia, bądź false w przypadku błędu.
-	*
-	*/
+			$this->load->model ("dropper/${class}");
+			$data = $this->$class->getDroppedDomains ();
 
-	private function de_get () {
+			$this->__save (array (
+				'domains'   => $data['domains'],
+				'extension' => $extension,
+				'drop_date' => $data['date'],
+			));
 
-		// http://www.
-		$page = $this->connector->get (array ("www.wp.pl", 'google.pl', 'onet.pl', 'wikipedia.org', 'online-tools.it'));
-		print_r ($page);
+		}
 
 	}
 
