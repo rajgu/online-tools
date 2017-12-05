@@ -38,9 +38,15 @@ class Domains extends CI_Controller {
 
 
 		$this->load->model ('dropper');
-		$this->dropper->process ();
+//		$this->dropper->process ();
+
+//		var_dump ($this->dropper->makeStats ());
 
 
+//		var_dump ($this->dropper->getDomains (false, false, 'z'));
+
+
+		
 	}
 
 

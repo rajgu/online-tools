@@ -59,4 +59,26 @@ class Domain extends CI_Model {
 		return FALSE;
 	}
 
+	/*
+	*
+	* @function: dropper_stats
+	* Zwraca dostępne rozszerzenia i liczbę domen w bazie per rozszerzenie.
+	*
+	*/
+
+	public function dropper_stats () {
+
+		$this->load->model ('dropper');
+
+		$data = $this->dropper->makeStats (isset ($this->params['extension']) ? $this->params['extension'] : false;
+
+		if ($data) {
+			$this->request->setResponse ($data);
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+
 }

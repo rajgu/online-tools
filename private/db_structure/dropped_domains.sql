@@ -5,4 +5,4 @@ CREATE TABLE dropped_domains (
   extension VARCHAR(16),
   date_dropped DATETIME,
   FULLTEXT (name)
-) Engine=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

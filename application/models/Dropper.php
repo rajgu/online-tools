@@ -31,6 +31,15 @@ class Dropper extends CI_Model {
 
 	/*
 	*
+	* @data: DROPPER_LIMIT
+	* Stała określająca liczbę domen pobieranych jednym zapytaniem.
+	*
+	*/
+
+	private $DROPPER_LIMIT = 100;
+
+	/*
+	*
 	* @function: __construct
 	* Konstruktor.
 	*
@@ -96,6 +105,70 @@ class Dropper extends CI_Model {
 
 		}
 
+	}
+
+	/*
+	*
+	* @function: makeStats
+	* Funkcja, generuje statystyki dla usuniętych domen trzymanych w bazie danych.
+	*
+	*/
+
+	public function makeStats ($extension = false) {
+
+		$this->db->from ($this->DROPPER_TABLE);
+
+		$this->db->select ('count(*) AS ilosc, extension');
+
+		if ($extension)
+			$this->db->where ('extension', $extension);
+
+		$this->db->group_by ('extension');
+		$result = $this->db->get ();
+		$data = $result->result_array ();
+
+		if (! $data OR empty ($data))
+			return false;
+
+		$return = array ();
+		foreach ($data as $domain_data)
+			$return[$domain_data['extension']] = $domain_data['ilosc'];
+
+		return $return;
+	}
+
+	/*
+	*
+	* @function: getDomains
+	* Funkcja, do wyszukiwania domen trzymanych w bazie danych.
+	*
+	*/
+
+	public function getDomains ($page = 0, $extension = false, $name = false) {
+
+		$this->db->from ($this->DROPPER_TABLE);
+		if ($name)
+			$this->db->where ("MATCH (name) AGAINST ('*${name}*' IN BOOLEAN MODE)", NULL, FALSE);
+		if ($extension)
+			$this->db->where ('extension', $extension);
+
+		$pages = floor ($this->db->count_all_results () / $this->DROPPER_LIMIT);
+
+		$this->db->from ($this->DROPPER_TABLE);
+		if ($name)
+			$this->db->where ("MATCH (name) AGAINST ('*${name}*' IN BOOLEAN MODE)", NULL, FALSE);
+		if ($extension)
+			$this->db->where ('extension', $extension);
+
+		$this->db->limit ((int) $this->DROPPER_LIMIT, (int) $page * $this->DROPPER_LIMIT);
+
+		$result = $this->db->get ();
+
+		return array (
+			'page'    => (int) $page,
+			'pages'   => (int) $pages,
+			'domains' => $result->result_array (),
+		);
 	}
 
 }
