@@ -3,6 +3,8 @@ logs/
 !logs/.htaccess
 !logs/index.html
 
+tmp/
+
 # Wykluczenie index.php (definiowanie zmiennej srodowiskowej ENVIRONMENT)
 index.php
 

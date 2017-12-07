@@ -27,6 +27,7 @@ class Dropper extends CI_Model {
 
 	private $DROPPER_LIST = array (
 		'pl'	=> 'dropper_pl',
+		'com'   => 'dropper_com',
 	);
 
 	/*
@@ -47,9 +48,11 @@ class Dropper extends CI_Model {
 
 	public function __construct () {
 
-		if (! $this->load->is_loaded ('connector')) {
+		if (! $this->load->is_loaded ('connector'))
 			$this->load->model ('connector');
-		}
+
+		if (! $this->load->is_loaded ('dropper_snapnames'))
+			$this->load->model ('dropper/dropper_snapnames');
 
 	}
 
@@ -96,6 +99,11 @@ class Dropper extends CI_Model {
 
 			$this->load->model ("dropper/${class}");
 			$data = $this->$class->getDroppedDomains ();
+
+			if (! $data) {
+				$this->logger->fatal (array ('Failed do get expired ', $extension, ' domains'));
+				continue;
+			}
 
 			$this->__save (array (
 				'domains'   => $data['domains'],
