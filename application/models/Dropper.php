@@ -20,6 +20,15 @@ class Dropper extends CI_Model {
 
 	/*
 	*
+	* @data: BATCH_SIZE
+	* Wielkosc paczki domen do pojedynczego importu do bazy danych.
+	*
+	*/
+
+	private $BATCH_SIZE = 500;
+
+	/*
+	*
 	* @array: DROPPER_LIST
 	* Lista rozszerzeń, wraz z nazwami klas do pobierania z zewnetrznych źródeł.
 	*
@@ -65,22 +74,48 @@ class Dropper extends CI_Model {
 
 	private function __save ($params) {
 
-		foreach ($params['domains'] AS $domain) {
+		$size = count ($params['data']);
+		$insert = array ();
+		$licznik = 0;
 
-			$domain_utf = idn_to_utf8 ($domain);
-			$domain_idn = idn_to_ascii ($domain);
+		foreach ($params['data'] AS $domain) {
 
-			$query = $this->db->get_where ($this->DROPPER_TABLE, array ('name' => $domain_utf));
+			$domain_utf = idn_to_utf8 ($domain['name']);
+			$domain_idn = idn_to_ascii ($domain['name']);
 
-			if (! empty ($query->result ()) or ! $domain)
-				continue;
-
-			$this->db->insert ($this->DROPPER_TABLE, array (
+			$insert[] = array (
 				'name'         => $domain_utf,
 				'name_idn'     => $domain_idn,
 				'extension'    => $params['extension'],
-				'date_dropped' => $params['drop_date'],
-			));
+				'date_dropped' => $domain['date'],
+			);
+
+			if ($licznik != 0 AND ($licznik % $this->BATCH_SIZE == 0 OR $licznik > $size)) {
+
+				$search_domain = array_map (function ($x) {return $x['name']; }, $insert);
+
+				$this->db->from ($this->DROPPER_TABLE);
+				$this->db->where_in ('name', $search_domain);
+				$query = $this->db->get ();
+
+				$results = $query->result_array ();
+
+var_dump ($insert);
+
+				if (! empty ($results)) {
+					foreach ($results AS $res) {
+						$isize = count ($insert);
+						for ($i = 0; $i < $isize; $i++) {
+							if ($res['name'] == $insert[$i]['name'])
+								unset ($insert[$i]);
+						}
+					}
+				}
+
+				$insert = array ();
+			}
+
+			$licznik++;
 		}
 
 	}
@@ -106,9 +141,8 @@ class Dropper extends CI_Model {
 			}
 
 			$this->__save (array (
-				'domains'   => $data['domains'],
+				'data'      => $data,
 				'extension' => $extension,
-				'drop_date' => $data['date'],
 			));
 
 		}

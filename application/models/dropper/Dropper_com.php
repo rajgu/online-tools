@@ -2,7 +2,7 @@
 
 /*
 *
-* @model dropper_pl
+* @model dropper_com
 * Klasa do obsługi pobierania usuniętych domen .com.
 *
 */
@@ -11,36 +11,12 @@ class Dropper_com extends Dropper_Snapnames {
 	
 	/*
 	*
-	* @param: NASK_URL
-	* Adres, pod którym nask publikuje usunięte domeny .pl.
+	* @param: EXTENSION
+	* Rozszerzenie domeny, którą pobieramy
 	*
 	*/
 	
-	private $NASK_URL = 'https://www.dns.pl/deleted_domains.txt';
-
-	/*
-	*
-	* @function: __parse
-	* Funkcja parsuje listę domen do postaci tablicy.
-	*
-	*/
-
-	private function __parse ($data) {
-
-		$sliced = explode ("\n", $data);
-
-		$date = $sliced[0];
-		$domains = array ();
-		$size = count ($sliced);
-		for ($x = 2; $x < $size; $x++)
-			$domains[] = $sliced[$x];
-
-
-		return array (
-			'date'		=> $date,
-			'domains'	=> $domains,
-		);
-	}
+	private $EXTENSION = 'com';
 
 	/*
 	*
@@ -57,13 +33,26 @@ class Dropper_com extends Dropper_Snapnames {
 	/*
 	*
 	* @function: getDroppedDomains
-	* Funkcja pobiera usunięte domeny .pl
+	* Funkcja pobiera usunięte domeny .com
 	*
 	*/
 
 	public function getDroppedDomains () {
 
-		$this->__download ();
+		if (! $this->__download ($this->EXTENSION))
+			return false;
+
+		$domains = $this->__getDomains ($this->EXTENSION);
+
+		if (! $domains) {
+
+			$this->logger->fatal (array ('nie udalo sie pobrac listy domen dla rozszerzenia: ', $this->EXTENSION));
+			return false;
+		} else {
+
+			$this->logger->info (array ('udalo sie pobrac liste domen dla rozszerzenia: ', $this->EXTENSION));
+			return $domains;
+		}
 	}
 
 

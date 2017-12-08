@@ -80,5 +80,4 @@ class Domain extends CI_Model {
 		return FALSE;
 	}
 
-
 }

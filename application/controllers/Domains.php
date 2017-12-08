@@ -36,7 +36,6 @@ class Domains extends CI_Controller {
 		$this->load->view ('head', $this->viewer->getHeaderData ());
 		$this->load->view ('domains/dropped');
 
-
 		$this->load->model ('dropper');
 		$this->dropper->process ();
 

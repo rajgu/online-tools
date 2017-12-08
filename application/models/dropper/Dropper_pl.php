@@ -32,14 +32,14 @@ class Dropper_pl extends CI_Model {
 		$date = $sliced[0];
 		$domains = array ();
 		$size = count ($sliced);
-		for ($x = 2; $x < $size; $x++)
-			$domains[] = $sliced[$x];
+		for ($x = 2; $x < $size; $x++) {
+			$domains[] = array (
+				'name' => $sliced[$x],
+				'date' => $date,
+			);
+		}
 
-
-		return array (
-			'date'		=> $date,
-			'domains'	=> $domains,
-		);
+		return $domains;
 	}
 
 	/*
