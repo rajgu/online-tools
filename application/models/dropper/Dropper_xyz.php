@@ -2,12 +2,12 @@
 
 /*
 *
-* @model dropper_com
-* Klasa do obsługi pobierania usuniętych domen .com.
+* @model dropper_xyz
+* Klasa do obsługi pobierania usuniętych domen .xyz.
 *
 */
 
-class Dropper_com extends Dropper_Snapnames {
+class Dropper_xyz extends Dropper_Snapnames {
 	
 	/*
 	*
@@ -16,7 +16,7 @@ class Dropper_com extends Dropper_Snapnames {
 	*
 	*/
 	
-	private $EXTENSION = 'com';
+	private $EXTENSION = 'xyz';
 
 	/*
 	*

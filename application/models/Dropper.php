@@ -35,8 +35,31 @@ class Dropper extends CI_Model {
 	*/
 
 	private $DROPPER_LIST = array (
-		'pl'	=> 'dropper_pl',
-		'com'   => 'dropper_com',
+		'pl'	      => 'dropper_pl',
+		'com'         => 'dropper_com',
+		'cc'	      => 'dropper_cc',
+		'xyz'         => 'dropper_xyz',
+		'org'         => 'dropper_org',
+		'net'         => 'dropper_net',
+		'us'          => 'dropper_us',
+		'info'        => 'dropper_info',
+		'biz'         => 'dropper_biz',
+		'tv'          => 'dropper_tv',
+		'online'      => 'dropper_online',
+		'website'     => 'dropper_website',
+		'mobi'        => 'dropper_mobi',
+		'com.co'      => 'dropper_com_co',
+		'london'      => 'dropper_london',
+		'me'          => 'dropper_me',
+		'work'        => 'dropper_work',
+		'email'       => 'dropper_email',
+		'global'      => 'dropper_global',
+		'club'        => 'dropper_club',
+		'photography' => 'dropper_photography',
+		'koeln'       => 'dropper_koeln',
+		'space'       => 'dropper_space',
+		'co'          => 'dropper_co',
+		'pro'         => 'dropper_pro',
 	);
 
 	/*
@@ -83,34 +106,42 @@ class Dropper extends CI_Model {
 			$domain_utf = idn_to_utf8 ($domain['name']);
 			$domain_idn = idn_to_ascii ($domain['name']);
 
-			$insert[] = array (
-				'name'         => $domain_utf,
-				'name_idn'     => $domain_idn,
-				'extension'    => $params['extension'],
+			$tinsert = array (
+				'name'		   => $domain_utf,
+				'name_idn'	   => $domain_idn,
+				'extension'	   => $params['extension'],
 				'date_dropped' => $domain['date'],
 			);
 
+
+			if (mb_check_encoding ($tinsert['name'], "UTF-8") AND
+				mb_detect_encoding ($tinsert['name'], 'UTF-8', true)) {
+				$insert[] = $tinsert;
+			}
+
 			if ($licznik != 0 AND ($licznik % $this->BATCH_SIZE == 0 OR $licznik > $size)) {
 
-				$search_domain = array_map (function ($x) {return $x['name']; }, $insert);
+				$search_domains = array_map (function ($x) {return $x['name']; }, $insert);
 
 				$this->db->from ($this->DROPPER_TABLE);
-				$this->db->where_in ('name', $search_domain);
+				$this->db->where_in ('name', $search_domains);
 				$query = $this->db->get ();
 
 				$results = $query->result_array ();
 
-var_dump ($insert);
-
 				if (! empty ($results)) {
+					$isize = count ($insert);
 					foreach ($results AS $res) {
-						$isize = count ($insert);
 						for ($i = 0; $i < $isize; $i++) {
-							if ($res['name'] == $insert[$i]['name'])
+							if (isset ($insert[$i]) AND ($res['name'] == $insert[$i]['name'])) {
 								unset ($insert[$i]);
+							}
 						}
 					}
 				}
+
+				if (! empty($insert))
+					$this->db->insert_batch ($this->DROPPER_TABLE, $insert);
 
 				$insert = array ();
 			}
@@ -141,7 +172,7 @@ var_dump ($insert);
 			}
 
 			$this->__save (array (
-				'data'      => $data,
+				'data'	  => $data,
 				'extension' => $extension,
 			));
 
@@ -207,7 +238,7 @@ var_dump ($insert);
 		$result = $this->db->get ();
 
 		return array (
-			'page'    => (int) $page,
+			'page'	=> (int) $page,
 			'pages'   => (int) $pages,
 			'domains' => $result->result_array (),
 		);

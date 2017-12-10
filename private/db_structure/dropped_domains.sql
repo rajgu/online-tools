@@ -4,5 +4,6 @@ CREATE TABLE dropped_domains (
   name_idn VARCHAR(255),
   extension VARCHAR(16),
   date_dropped DATETIME,
-  FULLTEXT (name)
+  UNIQUE KEY `uniq` (`name`),
+  FULLTEXT `name` (`name`)
 ) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

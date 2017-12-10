@@ -64,9 +64,13 @@ Class Dropper_snapnames extends CI_Model {
 						$this->SNAPNAMES_FILES_ARRAY[$days]['data'][$matches[2]] = array ();
 
 					if ($matches[2] == $extension) {
+
+						$date = DateTime::createFromFormat ('m/d/Y H:i', $matches[4]);
+						$time = $date->format ('Y-m-d H:i:s');
+
 						$this->SNAPNAMES_FILES_ARRAY[$days]['data'][$matches[2]][] = array (
 							'name' => $matches[1] . "." . $matches[2],
-							'date' => $matches[4],
+							'date' => $time,
 						);						
 					}
 
@@ -77,8 +81,7 @@ Class Dropper_snapnames extends CI_Model {
 				}
 		    }
 
-		    fclose ($handle);
-		
+		    fclose ($handle);		
 		}
 	}
 
