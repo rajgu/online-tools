@@ -70,7 +70,7 @@ class Domain extends CI_Model {
 
 		$this->load->model ('dropper');
 
-		$data = $this->dropper->makeStats (isset ($this->params['extension']) ? $this->params['extension'] : false;
+		$data = $this->dropper->makeStats (isset ($this->params['extension']) ? $this->params['extension'] : false);
 
 		if ($data) {
 			$this->request->setResponse ($data);
