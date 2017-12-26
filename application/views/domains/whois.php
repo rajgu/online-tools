@@ -21,30 +21,6 @@
 
 <script type="text/javascript">
 
-
-function Api_Send (data) {
-
-    console.log ("Api_Send: ");
-    console.log (data);
-
-    var requestData = {
-        "type": data['type'],
-        "command": data['command'],
-        "params": data['params']
-    }
-
-    console.log (requestData);
-
-    $.ajax({
-        type: "POST",
-        url: "<?php echo site_url ('/api') ?>",
-        data: JSON.stringify (requestData),
-        success: function () { console.log(123)}
-    });
-}
-
-
-
     $( "#whois_send" ).bind ( "click", function() {
 
         var domainName = $("#whois").val ()
@@ -53,7 +29,8 @@ function Api_Send (data) {
             Api_Send({
                 type: "domain",
                 command: "whois",
-                params: {"domain": domainName}
+                params: {"domain": domainName},
+                lock: true
             })
 
 

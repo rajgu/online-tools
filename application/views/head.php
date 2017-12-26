@@ -21,6 +21,10 @@
 ?>
 </head>
 <body>
+    <div id="spinnerContainer" class="spinner"></div>
+
+    <div id="spinnerConainer2" style="width: 500px; height: 500px; background: #000000;"></div>
+
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">

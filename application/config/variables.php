@@ -23,11 +23,14 @@ $config = array (
 			'css'	=> array (
 				'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css',
 				'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css',
+				'/public/css/custom.css',
 			),
 			'js'	=> array (
 				'//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js',
 				'//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js',
 				'/public/js/bootstrap.file-input.js',
+				'/public/js/spin.js',
+				'/public/js/front.js',
 			),
 			'js_ie8'=> array (
 				'/public/js/html5shiv.js',
@@ -70,11 +73,14 @@ $config = array (
 			'css'	=> array (
 				'/public/css/bootstrap.min.css',
 				'/public/css/bootstrap-theme.min.css',
+				'/public/css/custom.css',
 			),
 			'js'	=> array (
 				'/public/js/jquery-2.1.1.min.js',
 				'/public/js/bootstrap.min.js',
 				'/public/js/bootstrap.file-input.js',
+				'/public/js/spin.js',
+				'/public/js/front.js',
 			),
 			'js_ie8'=> array (
 				'/public/js/html5shiv.js',
